@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You | ECOMMERCE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="confirmation-page">
+    <h2>🎉 Thank You for Your Order!</h2>
+    <p>Your order has been received and is being processed.</p>
+
+    <div class="order-summary">
+      <h3>🛒 Order Summary</h3>
+      <ul id="orderItems"></ul>
+      <p><strong>Total Paid:</strong> ₦<span id="orderTotal">0</span></p>
+    </div>
+
+    <div class="delivery-info" id="deliveryInfo">
+      <!-- Delivery details will be injected here -->
+    </div>
+
+    <div class="confirmation-buttons">
+      <a href="track-order.html">Track Order</a>
+      <a href="invoice.html" target="_blank">Download Invoice</a>
+      <a href="index.html">Continue Shopping</a>
+    </div>
+  </div>
+
+  <script src="thankyou.js"></script>
+</body>
+</html>

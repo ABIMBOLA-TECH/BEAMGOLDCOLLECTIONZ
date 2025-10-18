@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>ECOMMERCE</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <audio id="toastSound-success" src="sounds/success.mp3"></audio>
+  <audio id="toastSound-error" src="sounds/error.mp3"></audio>
+  <audio id="toastSound-info" src="sounds/info.mp3"></audio>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="beamgold">
+    <!-- ==============MY MAIN HEADER==================== -->
+    <section class="landing-hero" id="home">
+      <header class="header">
+        <div class="logo">
+          <a href="#home">
+            <img src="images/logo.png" alt="BeamGold Collections Logo">
+          </a>
+        </div>
+        <nav class="nav" id="nav-links">
+          <a href="#home">Home</a>
+          <a href="#collections">Products</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="header-right">
+          <div class="search-bar">
+            <input type="text" id="globalSearchInput" placeholder="Search for products, brands, categories....." />
+            <button class="search-btn" onclick="globalSearch()">🔍Search</button>
+          </div>
+
+          <div class="account-cart">
+            <div class="account-dropdown" id="account-dropdown">
+              <a href="#" class="account" id="accountLabel">👤 Account ▾</a>
+
+              <div class="account-menu" id="accountMenu">
+                <!-- Always visible before login -->
+                <a href="#" class="guest-only" onclick="signIn()">🔐 Sign In</a>
+                <a href="#" class="guest-only" onclick="signUp()">📝 Sign Up</a>
+
+                <!-- User-only items -->
+                <a href="#" class="user-only" onclick="openDashboard('profile')">📄 My Profile</a>
+                <a href="#" class="user-only" onclick="openDashboard('orders')">📦 My Orders</a>
+                <a href="#" class="user-only" onclick="openDashboard('payment')">💳 My Wallet</a>
+                <a href="#" class="user-only" onclick="logout()">🚪 Logout</a>
+                <!-- <a href="#" class="user-only" onclick="closeDashboard()">❌ Close</a> -->
+
+                <!-- Admin-only items -->
+                <a href="#" class="admin-only" onclick="openDashboard('users')">👥 Users</a>
+                <a href="#" class="admin-only" onclick="openDashboard('orders')">📦 Orders</a>
+                <a href="#" class="admin-only" onclick="openDashboard('wallets')">💳 Wallets</a>
+                <a href="#" class="admin-only" onclick="openDashboard('products')">🛍️ Products</a>
+                <a href="#" class="admin-only" onclick="logout()">🚪 Logout</a>
+                <!-- <a href="#" class="admin-only" onclick="closeDashboard()">❌ Close</a> -->
+              </div>
+            </div>
+            <div class="cart-wrapper" onclick="toggleCart(true)">
+              <i class="fas fa-shopping-bag cart-icon"></i>
+              <span class="cart-count-badge" id="cart-count" style="display: none;">0</span>
+            </div>
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+          </div>
+        </div>
+
+        <!-- /* ================INFORMATION BAR============= */ -->
+        <div class="info-ticker">
+          <div class="ticker-content" id="ticker">
+            🚚 hi BeamGold Collections lovers 🧑‍💼🧑‍🛍️, Free shipping on orders over ₦20,000! &nbsp;&nbsp; 🎉 New
+            arrivals just dropped! &nbsp;&nbsp; 📞 Need help? Call 0800-SHOPZONE
+          </div>
+        </div>
+      </header>
+
+
+      <!-- /* ================SIGN up AND REGISTER SIDEBAR============= */ -->
+      <!-- Sign Up Sidebar -->
+      <div id="signupSidebar" class="auth-sidebar">
+        <div class="auth-box">
+          <h3>📝 Create Account</h3>
+          <form id="signupForm">
+            <input type="text" id="firstName" placeholder="First Name" required />
+            <input type="text" id="lastName" placeholder="Last Name" required />
+            <input type="email" id="signupEmail" placeholder="Email" required />
+            <input type="tel" id="phone" placeholder="Phone Number" required />
+            <input type="date" id="dob" placeholder="Date of Birth" required />
+            <select id="gender" required>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <div class="password-wrapper">
+              <div class="input-group">
+                <input type="password" id="signupPassword" placeholder="Password" required />
+                <span onclick="togglePassword('signupPassword', this)" class="toggle-icon">👁️</span>
+              </div>
+
+              <div class="input-group">
+                <input type="password" id="signupPasswordConfirmation" placeholder="Confirm Password" required />
+                <span onclick="togglePassword('signupPasswordConfirmation', this)" class="toggle-icon">👁️</span>
+              </div>
+            </div>
+            <button type="submit" id="registerBtn">
+              <span class="btn-text">Create Account</span>
+              <span class="btn-loader" style="display: none;">⏳</span>
+            </button>
+          </form>
+          <p>Already have an account? <a href="#" onclick="switchToSignin()">Sign In</a></p>
+          <button onclick="closeSidebar('signupSidebar')" class="close-btn">Close</button>
+        </div>
+      </div>
+
+      <!-- /* ================SIGN IN  SIDEBAR============= */ -->
+      <!-- Sign In Sidebar -->
+      <!-- 🔐 Login Sidebar -->
+      <div id="signinSidebar" class="auth-sidebar">
+        <div class="auth-box">
+          <h3>🔐 Sign In</h3>
+          <form id="signinForm">
+            <input type="email" id="signinEmail" placeholder="Email" required />
+            <div class="password-wrapper">
+              <input type="password" id="signinPassword" placeholder="Password" required />
+              <span onclick="togglePassword('signinPassword')" class="toggle-icon">👁️</span>
+            </div>
+            <a href="#" class="forgot-link" onclick="forgotPassword()">Forgot Password?</a>
+            <button type="submit" id="loginBtn">
+              <span class="btn-text">Sign In</span>
+              <span class="btn-loader" style="display: none;">⏳</span>
+            </button>
+          </form>
+          <p>Don't have an account? <a href="#" onclick="switchToSignup()">Register</a></p>
+          <button onclick="closeSidebar('signinSidebar')" class="close-btn">Close</button>
+        </div>
+      </div>
+
+      <!-- =======🔁 Forgot Password Sidebar======= -->
+      <!-- 🔁 Forgot Password Sidebar -->
+      <div id="forgotPasswordSidebar" class="auth-sidebar">
+        <div class="auth-box">
+          <h3>🔁 Forgot Password</h3>
+          <form id="forgotPasswordForm">
+            <input type="email" id="forgotEmail" placeholder="Enter your email" required />
+            <button type="submit">Send Reset Link</button>
+          </form>
+          <p>Remembered your password? <a href="#" onclick="switchToSigninFromForgot()">Sign In</a></p>
+          <button onclick="closeSidebar('forgotPasswordSidebar')" class="close-btn">Close</button>
+        </div>
+      </div>
+
+      <!-- =======================IS_ADMIN USERS DASHBOARD============================-->
+      <div id="adminDashboardWrapper" style="display: none;">
+        <section class="admin-dashboard">
+          <aside class="dashboard-sidebar">
+            <h2>Welcome, <span id="adminName">Admin</span></h2>
+            <ul>
+              <li onclick="loadAdminSection('users')">👥 All Users</li>
+              <li onclick="loadAdminSection('orders')">📦 All Orders</li>
+              <li onclick="loadAdminSection('wallets')">💳 Wallets</li>
+              <li onclick="loadAdminSection('products')">🛍️ Products</li>
+              <li onclick="logout()">🚪 Logout</li>
+              <li onclick="closeDashboard()">❌ Close Dashboard</li>
+            </ul>
+          </aside>
+          <main class="dashboard-content">
+            <div id="adminSectionContent">
+              <!-- Dynamic admin content will be injected here -->
+            </div>
+          </main>
+        </section>
+      </div>
+
+      <!-- /* ================IMAGE PREVIEW MODAL============= */ -->
+      <div id="imagePreviewModal" class="previewmodal" style="display:none;">
+        <span class="previewclose" onclick="closeImagePreview()">&times;</span>
+        <img class="previewmodal-content" id="previewedImage" />
+      </div>
+
+      <!-- /* ================CUSTOMER/USERS  DASHBOARD============= */ -->
+      <div id="dashboardWrapper" style="display: none;">
+        <section class="customer-dashboard">
+          <aside class="dashboard-sidebar">
+            <h2>Hello, <span id="dashboardUserName">User</span></h2>
+            <ul>
+              <li onclick="showSection('profile')">📄 My Profile</li>
+              <li onclick="showSection('orders')">📦 My Orders</li>
+              <li onclick="showSection('payment')">💳 My Wallet</li>
+              <li onclick="logout()">🚪 Logout</li>
+              <li onclick="closeDashboard()">❌ Close Dashboard</li>
+            </ul>
+          </aside>
+
+          <main class="dashboard-content">
+
+            <!-- ==========DASHBOARD PROFILE=========== -->
+            <div id="profile" class="dashboard-section active">
+              <h3>👤 My Profile</h3>
+              <form id="profileForm">
+                <label for="profileName">Name:</label>
+                <input type="text" id="profileName" name="name" required />
+
+                <label for="profileEmail">Email:</label>
+                <input type="email" id="profileEmail" name="email" required />
+
+                <label for="profilePhone">Phone:</label>
+                <input type="text" id="profilePhone" name="phone" />
+
+                <label for="profileAddress">Address:</label>
+                <input type="text" id="profileAddress" name="address" />
+
+                <!-- <label for="profilePassword">Password:</label>
+          <input type="password" id="profilePassword" name="password" placeholder="Enter new password" /> -->
+
+                <button type="submit" id="updateProfileBtn">
+                  <span class="btn-text">Update Profile</span>
+                  <span class="btn-loader" style="display: none;">⏳</span>
+                </button>
+              </form>
+              <p id="profileMessage"></p>
+            </div>
+
+
+
+
+            <!-- ==========DASHBOARD ORDER ===============-->
+            <div id="orders" class="dashboard-section">
+              <h3>📦 My Orders</h3>
+              <div class="order-filter">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" onchange="filterOrdersByStatus()">
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <table class="order-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- This will be dynamically filled by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ==========DASHBOARD ORDER VIEWPOINT============-->
+            <div id="orderDetailsModal" class="modal">
+              <div class="modal-content">
+                <span onclick="document.getElementById('orderDetailsModal').style.display='none'"
+                  class="close-btn1">&times;</span>
+                <div id="orderDetailsContent"></div>
+              </div>
+            </div>
+
+            <!-- ==========DASHBOARD PAYMENT METHOD============-->
+            <div id="payment" class="dashboard-section">
+              <h3>💼 My Wallet</h3>
+              <p><strong>Balance:</strong> ₦<span id="walletBalance">0.00</span></p>
+              <button onclick="initiateFunding()">Fund Wallet</button>
+              <h4>🧾 Transaction History</h4>
+              <table class="transaction-table">
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionList"></tbody>
+              </table>
+            </div>
+          </main>
+        </section>
+      </div>
+
+
+      <!-- ========== HERO SECTION ========== -->
+      <section class="landing-hero">
+        <!-- Carousel Background Container -->
+        <div class="carousel-container">
+          <!-- Slide 1 -->
+          <div class="carousel-slide active" style="background-image: url('images/background1.jpg');"></div>
+          <!-- Slide 2 -->
+          <div class="carousel-slide" style="background-image: url('images/background2.jpg');"></div>
+          <!-- Slide 3 -->
+          <div class="carousel-slide" style="background-image: url('images/background3.jpg');"></div>
+        </div>
+
+        <!-- Overlay for dark effect -->
+        <div class="carousel-background"></div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+          <h1 class="fade-in delay-1">Welcome to BeamGold</h1>
+          <p class="fade-in delay-2">Discover premium products crafted for you</p>
+          <a href="#collections" class="cta-btn fade-in delay-2">Start Shopping</a>
+        </div>
+      </section>
+
+    </section>
+
+
+    <!-- /* ================PRODUCTS  CATEGORIES============= */ -->
+
+    <section class="featured-categories" id="collections">
+      <h2 class="section-title">Shop by Category</h2>
+
+      <!-- Main Categories -->
+      <div class="category-grid">
+        <div class="category-card wholesale" onclick="selectMainCategory('wholesale')">
+          <div class="overlay">
+            <h3>📦 Wholesales</h3>
+            <p class="category-count">Explore bulk deals</p>
+            <span class="category-btn">View Subcategories</span>
+          </div>
+        </div>
+
+        <div class="category-card retail" onclick="selectMainCategory('retail')">
+          <div class="overlay">
+            <h3>🛍️ Retails</h3>
+            <p class="category-count">Shop individual items</p>
+            <span class="category-btn">View Subcategories</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subcategories -->
+      <div id="subcategorySection" class="subcategory-grid hidden">
+        <h3 id="subcategoryTitle">Subcategories</h3>
+        <div class="subcategory-list">
+          <div class="subcategory-card" onclick="storeSubcategory('unisex')">🧥 Unisex</div>
+          <div class="subcategory-card" onclick="storeSubcategory('ladieswear')">👗 Ladieswear</div>
+          <div class="subcategory-card" onclick="storeSubcategory('slides')">👟 Slides/Sneakers</div>
+          <div class="subcategory-card" onclick="storeSubcategory('accessories')">👜 Accessories</div>
+          <div class="subcategory-card" onclick="storeSubcategory('boxers')">🩲 Boxer/Singlet</div>
+          <div class="subcategory-card" onclick="storeSubcategory('kidwears')">🧒 Kidwears</div>
+        </div>
+      </div>
+
+      <!-- =========Product Display============= -->
+      <div id="productDisplay" class="product-grid hidden"></div>
+
+      <!-- PAGINATIONS FOR PRODUCT -->
+      <div id="paginationControls" class="pagination-controls hidden">
+        <button onclick="prevPage()">← Prev</button>
+        <span id="pageIndicator">Page 1</span>
+        <button onclick="nextPage()">Next →</button>
+      </div>
+
+    </section>
+
+    <!-- /* ================SIDEBAR CART AND CHECKOUT AND PAYMENTS============= */ -->
+
+    <div id="cartSidebar" class="cart-sidebar">
+      <div class="cart-header">
+        <h3>🛒 Your Cart</h3>
+        <span class="close-cart" onclick="toggleCart(false)">×</span>
+      </div>
+
+
+      <div id="cartItems" class="cart-items">
+        <!-- Cart items will be injected here by JavaScript -->
+      </div>
+
+      <div class="cart-footer">
+        <p><strong>Total:</strong> ₦<span id="cartTotal">0</span></p>
+        <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!-- =========TESTIMONIAL DISPLAY============= -->
+    <section class="testimonial-section">
+      <h2 class="section-title">What Our Customers Are Saying</h2>
+      <div class="carousel-wrapper">
+        <div class="testimonial-carousel" id="testimonialCarousel"></div>
+      </div>
+    </section>
+
+    <!-- ✅ Include this at the bottom of your HTML file -->
+    <script>
+      const testimonials = [
+        {
+          name: "Amina Yusuf",
+          date: "August 20, 2025",
+          rating: 5,
+          feedback: "I love the quality of the kiddiewear I bought. Fast delivery and great customer service!"
+        },
+        {
+          name: "Chinedu Okeke",
+          date: "August 18, 2025",
+          rating: 4,
+          feedback: "The sneakers were exactly as described. I’ll definitely be ordering again."
+        },
+        {
+          name: "Fatima Bello",
+          date: "August 15, 2025",
+          rating: 5,
+          feedback: "Affordable prices and stylish ladieswear. My friends keep asking where I shop!"
+        },
+        {
+          name: "Tunde Adebayo",
+          date: "August 10, 2025",
+          rating: 4,
+          feedback: "Boxers were comfortable and well-packaged. Great value for money."
+        },
+        {
+          name: "Ngozi Nwosu",
+          date: "August 5, 2025",
+          rating: 5,
+          feedback: "Unisex tees are top-notch. I’m impressed with the fabric and fit."
+        }
+      ];
+
+      function renderTestimonials() {
+        const carousel = document.getElementById('testimonialCarousel');
+        carousel.innerHTML = ''; // Clear previous content
+
+        testimonials.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'testimonial-card';
+          card.innerHTML = `
+        <div class="customer-name">${t.name}</div>
+        <div class="review-date">${t.date}</div>
+        <div class="stars">${'⭐'.repeat(t.rating)}${'☆'.repeat(5 - t.rating)}</div>
+        <div class="feedback">${t.feedback}</div>
+      `;
+          carousel.appendChild(card);
+        });
+      }
+
+      function slideTestimonials() {
+        const carousel = document.getElementById('testimonialCarousel');
+        const cardsPerView = 4;
+        const totalCards = testimonials.length;
+        let currentIndex = 0;
+
+        setInterval(() => {
+          currentIndex = (currentIndex + cardsPerView) % totalCards;
+          const offset = currentIndex * (100 / cardsPerView);
+          carousel.style.transform = `translateX(-${offset}%)`;
+        }, 5000); // Slide every 5 seconds
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        renderTestimonials();
+        slideTestimonials();
+      });
+    </script>
+    <!-- 🔍 ABOUT ME MODAL -->
+    <div id="aboutMeModal" class="modal">
+      <div class="modal-content about-modal">
+        <span class="close-btn2" onclick="closeAboutModal()">&times;</span>
+        <div class="about-container">
+          <div class="about-image">
+            <img src="images/background8.png" alt="Tajudeen's Photo">
+          </div>
+          <div class="about-content">
+            <h2>👋 About Me</h2>
+            <p>Hi, I'm <strong>Tajudeen</strong>—a passionate entrepreneur and digital innovator based in Ogun State,
+              Nigeria. I specialize in building seamless eCommerce experiences that connect people with products they
+              love.</p>
+            <p>With a background in tech and a flair for design, I’ve created BeamGold Collections to deliver quality,
+              style, and trust to every customer.</p>
+            <ul class="about-highlights">
+              <li>💼 Founder of BeamGold Collections</li>
+              <li>🛍️ Expert in product curation & logistics</li>
+              <li>🧠 Passionate about automation & UX</li>
+              <li>🌍 Based in Abeokuta, Nigeria</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <section id="contact" class="contact-section">
+      <!-- ==========FOOTERS SECTION============ -->
+
+      <footer class="site-footer">
+        <div class="footer-container">
+
+          <!-- Contact Info -->
+          <div class="footer-section">
+            <h4>📞 Contact Us</h4>
+            <p>Email: <a href="mailto:store@beamgoldcollections.com">store@beamgoldcollections.com</a></p>
+            <p>Phone: +234 800 SHOPZONE</p>
+            <p>Address: Onikolobo, Abeokuta, Ogun State</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h4>🧭 Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#collections">Shop</a></li>
+              <li><a href="#" onclick="openAboutModal()">About Me</a></li>
+
+            </ul>
+          </div>
+
+          <!-- Social Media -->
+          <div class="footer-section">
+            <h4>📱 Follow Us</h4>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+
+          <!-- Map Section -->
+          <div class="footer-section footer-map">
+            <h4>📍 Our Location</h4>
+            <div class="map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1979.4963796767354!2d3.33108596064513!3d7.126832910982786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103a4c7c4b53e58d%3A0x7afc36d3d723f036!2sOnikolobo%2C%20Abeokuta%20110104%2C%20Ogun%20State!5e0!3m2!1sen!2sng!4v1756204761004!5m2!1sen!2sng"
+                width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy">
+              </iframe>
+              <a class="direction-btn"
+                href="https://www.google.com/maps/dir/?api=1&destination=Onikolobo,+Abeokuta,+Ogun+State"
+                target="_blank">🚗
+                Get Directions</a>
+            </div>
+          </div>
+
+          <!-- WhatsApp & Business Hours -->
+          <div class="footer-section">
+            <h4>💬 Chat With Us</h4>
+            <p>Need help or want to place an order?</p>
+            <a class="whatsapp-link"
+              href="https://wa.me/2348060523152?text=Hello%20BeamGold%20Collections%2C%20I%20need%20help%20with%20my%20order"
+              target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+            </a>
+
+            <h4 style="margin-top: 20px;">🕒 Business Hours</h4>
+            <ul class="business-hours">
+              <li>Mon–Fri: 9:00 AM – 6:00 PM</li>
+              <li>Saturday: 10:00 AM – 4:00 PM</li>
+              <li>Sunday: Closed</li>
+            </ul>
+          </div>
+
+          <!-- page up -->
+          <button id="scrollToTop" title="Go to top">⬆️</button>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+          <p>© 2025 BeamGold Collections. All rights reserved.</p>
+          <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+      </footer>
+
+      <a href="https://wa.me/2348060523152?text=Hello%20BeamGold%20Collections%2C%20I%20need%20help%20with%20my%20order"
+        class="whatsapp-float" target="_blank" title="Chat with us">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+
+    </section>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

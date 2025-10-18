@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout | ECOMMERCE</title>
+  <link rel="stylesheet" href="style.css">
+  
+
+</head>
+<body>
+  <section class="checkout-page">
+    <h2>🛍️ Checkout</h2>
+
+    <!-- Cart Summary -->
+    <div class="checkout-section">
+      <h3>🛒 Your Items</h3>
+      <ul id="cartSummary"></ul>
+      <p><strong>Total:</strong> ₦<span id="cartTotal">0</span></p>
+    </div>
+
+    <!-- Delivery Info -->
+    <form id="deliveryForm" class="checkout-section">
+      <h3>🏠 Delivery Information</h3>
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="text" id="phoneNumber" placeholder="Phone Number" required>
+      <input type="text" id="deliveryAddress" placeholder="Delivery Address" required>
+      <select id="deliveryState" required>
+        <option value="">Select State</option>
+        <option value="Abia">Abia</option>
+        <option value="Adamawa">Adamawa</option>
+        <option value="Akwa Ibom">Akwa Ibom</option>
+        <option value="Anambra">Anambra</option>
+        <option value="Bauchi">Bauchi</option>
+        <option value="Bayelsa">Bayelsa</option>
+        <option value="Benue">Benue</option>
+        <option value="Borno">Borno</option>
+        <option value="Cross River">Cross River</option>
+        <option value="Delta">Delta</option>
+        <option value="Ebonyi">Ebonyi</option>
+        <option value="Edo">Edo</option>
+        <option value="Ekiti">Ekiti</option>
+        <option value="Enugu">Enugu</option>
+        <option value="FCT">FCT</option>
+        <option value="Gombe">Gombe</option>
+        <option value="Imo">Imo</option>
+        <option value="Jigawa">Jigawa</option>
+        <option value="Kaduna">Kaduna</option>
+        <option value="Kano">Kano</option>
+        <option value="Katsina">Katsina</option>
+        <option value="Kebbi">Kebbi</option>
+        <option value="Kogi">Kogi</option>
+        <option value="Kwara">Kwara</option>
+        <option value="Lagos">Lagos</option>
+        <option value="Nasarawa">Nasarawa</option>
+        <option value="Niger">Niger</option>
+        <option value="Ogun">Ogun</option>
+        <option value="Ondo">Ondo</option>
+        <option value="Osun">Osun</option>
+        <option value="Oyo">Oyo</option>
+        <option value="Plateau">Plateau</option>
+        <option value="Rivers">Rivers</option>
+        <option value="Sokoto">Sokoto</option>
+        <option value="Taraba">Taraba</option>
+        <option value="Yobe">Yobe</option>
+        <option value="Zamfara">Zamfara</option>
+      </select>
+    
+    
+      <!-- Payment Method -->
+    
+      <!-- Payment Method (Paystack only) -->
+      <h3>💳 Payment Method</h3>
+      <p>Payments are securely processed via Paystack.</p>
+
+     <!-- 💳 Wallet Payment Option -->
+ <label class="wallet-option">
+  <input type="checkbox" id="useWallet">
+  <span>Pay with Wallet (₦<span id="walletBalance">0.00</span>)</span>
+</label>
+
+
+  <!-- Confirm Button -->
+  <button id="confirmBtn" type="submit">Confirm Order</button>
+  <div id="spinner" style="display: none;">Processing...</div>
+
+
+      <div class="spinner" id="spinner" style="display: none;">
+        <img src="images/spinner.gif" alt="Loading...">
+        <p>Processing your order...</p>
+      </div>
+    
+    
+    
+      
+      <!-- Spinner -->
+      <div class="spinner" id="spinner" style="display: none;">
+        <img src="spinner.gif" alt="Loading...">
+        <p>Processing your order...</p>
+      </div>
+    </form>
+  </section>
+
+
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>
