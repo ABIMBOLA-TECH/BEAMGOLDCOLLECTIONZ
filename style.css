@@ -1,6 +1,6 @@
 
 :root {
-  --primary-color: rgb(110, 5, 110);
+  --primary-color: rgba(110, 5, 110, 0.966);
   --primary-hover: rgb(196, 94, 196);
   --secondary-color: rgb(236, 208, 136);
   --secondary-hover: rgb(207, 132, 33);
@@ -22,6 +22,7 @@
     width: 100%;
     margin: auto;
     overflow-x: hidden;
+    /* background-color: #800080; */
   }
 
 *{
@@ -70,6 +71,9 @@
   font-size: 18px;
 }
 
+.nav a:hover {
+  color: var(--secondary-hover);
+}
 /* Help dropdown */
 .help-dropdown {
   position: relative;
@@ -138,7 +142,8 @@
 
 .search-btn {
   padding: 10px 12px;
-  background-color: var(--secondary-color);
+  /* background-color: var(--secondary-color); */
+  background-color: rgb(227, 190, 141);
   color: var(--text-light);
   border: none;
   cursor: pointer;
@@ -147,6 +152,9 @@
   cursor: pointer;
 }
 
+.search-btn:hover {
+  background-color: var(--secondary-hover);
+}
 
 /* Account and cart */
 .account-cart {
@@ -204,7 +212,7 @@
   font-size: 20px;
   color: var(--text-light);
   cursor: pointer;
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-hover);
   padding: 10px 15px;
   border-radius: 50%;
   margin-right: 10px;
@@ -470,6 +478,9 @@
  font-size: 50px;
  width: 50%;
  margin: auto;
+ margin-bottom: 25PX;
+ /* color: #DA70DC; */
+ color: #fff;
 }
 
 .hero-content p{
@@ -477,17 +488,26 @@
  font-size: 30px;
  width: 50%;
  margin: auto;
+ color: #fff;
+ margin-bottom: 10px;
 }
 
 .cta-btn {
   display: inline-block;
   margin-top: 20px;
-  padding: 12px 24px;
+  padding: 13px 40px;
   background-color: rgb(227, 190, 141);
   color: white;
   text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.cta-btn:hover {
+  background-color: var(--secondary-hover);
+  border-radius: 30px;
+  transition: all 0.3s ease;
 }
 
 .fade-in {
@@ -531,7 +551,7 @@
   position: relative;
   z-index: 10;
   padding: 60px 20px;
-  background-color: #fdfdfd;
+  background-color: #fff;
   text-align: center;
 }
 
@@ -545,14 +565,15 @@
   display: flex;
   gap: 30px;
   justify-content: center;
-  margin-top: 40px;
+  margin: 40px;
 }
 
 .category-card {
-  background-color: #fff;
+  background-color: #800080;
   border-radius: 12px;
-  padding: 30px;
-  width: 250px;
+  padding: 55px;
+  width: 300px;
+  /* height: 300px; */
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   cursor: pointer;
@@ -564,8 +585,9 @@
 }
 
 .overlay h3 {
-  font-size: 22px;
+  font-size: 21px;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .category-btn {
@@ -578,6 +600,15 @@
   font-weight: bold;
 }
 
+.category-btn:hover{
+  background-color: var(--secondary-hover);
+  color: #800080;
+}
+
+.category-count{
+  font-size: 21px;
+  color: #fff;
+}
 /* Subcategory Section */
 .subcategory-grid {
   margin-top: 50px;
@@ -604,7 +635,7 @@
 }
 
 .subcategory-card:hover {
-  background-color: #eaeaea;
+  background-color: #C8A2C8;
 }
 
 /* Fade-in Animations */
@@ -799,7 +830,8 @@
 .testimonial-card {
   flex: 0 0 calc(25% - 15px); /* 4 cards per row */
   padding: 20px;
-  background: rgba(255, 255, 255, 0.25);
+  /* background: rgba(255, 255, 255, 0.25); */
+  background: #DA70DC;
   border-radius: 16px;
   backdrop-filter: blur(10px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -821,7 +853,7 @@
 
 .review-date {
   font-size: 12px;
-  color: #777;
+  color: #dfd0d0;
   margin-bottom: 10px;
 }
 
@@ -1969,11 +2001,12 @@ ABOUY ME MODAL
 /* LAST FOOTER */
 
 .site-footer {
-  background-color: rgb(110, 5, 110);
+  
   color: white;
   padding: 40px 20px 20px;
   font-size: 14px;
   overflow-x: auto;
+  background-color: rgb(110, 5, 110);
 }
 
 .footer-container {
