@@ -88,9 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('is_admin', data.user.is_admin ? '1' : '0');
           updateAccountDropdown();
           closeSidebar('signinSidebar');
-          showToast("Login successful!", "success");
+          showToast("Login successful, Enjoy!", "success");
         } else {
-          showToast(data.message || "Login failed", "error");
+          showToast('Invalid credentials, Login Failed', "error");
         }
       })
       .catch(err => {
@@ -1054,6 +1054,7 @@ function storeSubcategory(subcategory) {
 // ========== PRODUCT RENDERING ==========
 function renderProducts() {
   const display = document.getElementById('productDisplay');
+  const pageIndicator = document.getElementById('pageIndicator');
   display.innerHTML = '';
 
   const start = (currentPage - 1) * itemsPerPage;
@@ -1079,9 +1080,8 @@ function renderProducts() {
       <div class="product-name">${product.name}</div>
       <div class="product-rating">${getRatingStars(product.id)}</div>
       <div class="product-price">₦${product.price.toLocaleString()}</div>
-      <div class="product-stock ${product.stock === 0 ? 'out-of-stock' : ''}">
-        ${product.stock > 0 ? `In stock: ${product.stock}` : 'Out of stock'}
-      </div>
+          <div class="product-main">🛍️ ${product.main}</div> <!-- ✅ Add this line -->
+
       <button class="add-to-cart"
         data-id="${product.id}"
         data-name="${product.name}"
@@ -1113,23 +1113,54 @@ function prevPage() {
   }
 }
 
+
+
+
+
 // ========== NEW: FETCH ALL PRODUCTS ==========
 function fetchAllProducts() {
-  fetch('http://127.0.0.1:8000/api/products')
-    .then(res => res.json())
+  const display = document.getElementById('productDisplay');
+  const pagination = document.getElementById('paginationControls');
+  const pageIndicator = document.getElementById('pageIndicator');
+
+  // Show loading spinner
+  display.innerHTML = `<div class="spinner-wrapper"><div class="spinner-icon"></div><p>Loading products...</p></div>`;
+  display.classList.remove('hidden');
+  pagination.classList.add('hidden');
+
+  fetch('http://127.0.0.1:8000/api/products/filter?main=retail')
+    .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(products => {
+      if (!Array.isArray(products) || products.length === 0) {
+        display.innerHTML = `<div class="no-products"><p>😕 No retail products found.</p></div>`;
+        pagination.classList.add('hidden');
+        return;
+      }
+
       currentFilteredProducts = products;
       currentPage = 1;
-      renderProducts();
+
+      renderProducts(); // This handles slicing and rendering
+
+      // Show pagination controls
+      pagination.classList.remove('hidden');
+
+      // Update page indicator
+      if (pageIndicator) {
+        pageIndicator.textContent = `Page ${currentPage}`;
+      }
     })
     .catch(err => {
       console.error('Failed to load products:', err);
-      const display = document.getElementById('productDisplay');
-      if (display) {
-        display.innerHTML = '<p>Failed to load products. Please try again later.</p>';
-      }
+      display.innerHTML = '<p>Failed to load products. Please try again later.</p>';
+      pagination.classList.add('hidden');
     });
 }
+
+
+
+
+
 
 // ========== NEW: UPDATE STOCK DISPLAY ==========
 function updateStockDisplay(productId, newStock) {
@@ -1389,9 +1420,6 @@ function openAboutModal() {
 function closeAboutModal() {
   document.getElementById('aboutMeModal').style.display = 'none';
 }
-
-
-
 
 
 

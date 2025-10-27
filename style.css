@@ -164,8 +164,6 @@
   margin-right: 20px;
 }
 
-
-
 .account-dropdown {
   position: relative;
 }
@@ -291,6 +289,12 @@
   color: white;
   border: none;
   cursor: pointer;
+  transition: border-radius 0.4s ease, background-color 0.3s ease;
+}
+
+.auth-box button:hover{
+  background-color: rgb(165, 41, 165);
+  border-radius: 20px;
 }
 
 .password-wrapper {
@@ -397,7 +401,7 @@
   /* top: 90px; */
   width: 100%;
   background-color:white;
-  color: #333;
+  color: rgb(176, 31, 176);
   font-weight: bold;
   overflow: hidden;
   white-space: nowrap;
@@ -411,7 +415,7 @@
 
 .ticker-content {
   display: inline-block;
-  animation: scrollTicker 20s linear infinite;
+  animation: scrollTicker 50s linear infinite;
 }
 
 @keyframes scrollTicker {
@@ -426,8 +430,8 @@
 
 
 .landing-hero {
-  position: relative;
-  height: 100vh;
+  /* position: relative; */
+  /* height: 100vh; */
   overflow: hidden;
 }
 
@@ -470,7 +474,7 @@
   /* color: rgb(110, 5, 110); */
   color:black;
   text-align: center;
-  padding-top: 300px;
+  padding: 250px 0px;
 }
 
 .hero-content h1{
@@ -478,7 +482,7 @@
  font-size: 50px;
  width: 50%;
  margin: auto;
- margin-bottom: 25PX;
+ margin-bottom: 25px;
  /* color: #DA70DC; */
  color: #fff;
 }
@@ -495,6 +499,7 @@
 .cta-btn {
   display: inline-block;
   margin-top: 20px;
+  /* margin-bottom: 300px; */
   padding: 13px 40px;
   background-color: rgb(227, 190, 141);
   color: white;
@@ -532,7 +537,7 @@
 }
 
 /* 🎥 Video Background Styling */
-.hero-video {
+/* .hero-video {
   position: absolute;
   top: 0;
   left: 0;
@@ -540,7 +545,7 @@
   height: 100%;
   object-fit: cover;
   z-index: -1;
-}
+} */
 
 
 
@@ -550,7 +555,7 @@
  .featured-categories {
   position: relative;
   z-index: 10;
-  padding: 60px 20px;
+  padding: 0px 20px;
   background-color: #fff;
   text-align: center;
 }
@@ -558,7 +563,7 @@
 .section-title {
   font-size: 36px;
   font-family: 'Playfair Display', serif;
-  margin-bottom: 40px;
+  margin: 20px 0PX;
   color: #333;
 }
  .category-grid {
@@ -729,6 +734,7 @@
   font-size: 15px;
   color: var(--success-color);
   text-align: center;
+  font-weight: 600;
 }
 
 #productDisplay {
@@ -748,6 +754,13 @@
   font-size: 16px;
 }
 
+.product-main {
+  font-size: 13px;
+  color: #555;
+  margin-top: 4px;
+}
+
+
 .no-products {
   text-align: center;
   padding: 2rem;
@@ -756,6 +769,7 @@
 }
 
 .add-to-cart {
+  width: 90%;
   margin-top: 10px;
   background-color: var(--primary-color);
   padding: 8px 12px;
@@ -898,7 +912,7 @@
 }
 .dashboard-sidebar {
   width: 300px;
-  background-color: #c2185b;
+  background-color: rgb(110, 5, 110);
   color: white;
   padding: 20px;
   border-radius: 8px;
@@ -918,7 +932,7 @@
   transition: background 0.3s ease;
 }
 .dashboard-sidebar li:hover {
-  background-color: #ad1457;
+  background-color: rgb(133, 11, 133);
   padding-left: 10px;
 }
 .dashboard-content {
@@ -958,13 +972,16 @@
 #profileForm button {
   margin-top: 15px;
   padding: 10px;
-  background-color: #c2185b;
+  background-color: rgb(110, 5, 110);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
+#profileForm button:hover {
+  background-color: rgb(165, 41, 165);
+}
 
 
 /* DASHBOARD ORDER */
@@ -1284,7 +1301,7 @@ th {
 .adminsearch {
   margin-bottom: 10px;
   padding: 8px 12px;
-  background-color: var(--danger-color);
+  background-color: rgb(165, 41, 165);
   color: var(--text-light);
   border: none;
   cursor: pointer;
@@ -1717,12 +1734,17 @@ label {
 .cart-footer button {
   width: 100%;
   padding: 10px;
-  background-color: #c2185b;
+  background-color: rgb(110, 5, 110);
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
+
+.cart-footer button:hover {
+background-color: rgb(165, 41, 165);
+}
+
 .cart-thumb {
   width: 40px;
   height: 40px;
@@ -2090,6 +2112,7 @@ ABOUY ME MODAL
 }
 
 .direction-btn:hover {
+  text-decoration: none;
   background-color: #e0c200;
 }
 
@@ -2110,6 +2133,7 @@ ABOUY ME MODAL
 }
 
 .whatsapp-link:hover {
+  text-decoration: none;
   background-color: #1da851;
 }
 
@@ -2143,15 +2167,15 @@ ABOUY ME MODAL
   position: fixed;
   bottom: 30px;
   right: 30px;
-  display: none;
-  background-color:  rgb(227, 190, 141);
-  color: white;
+  /* display: none; */
+  /* background-color:  rgb(227, 190, 141); */
+  /* color: white; */
   border: none;
   padding: 6px 8PX;
   border-radius: 70%;
   cursor: pointer;
   font-size: 20px;
-  z-index: 1000;
+  z-index: 1200;
 }
 
 #scrollToTop:hover {
@@ -2161,35 +2185,55 @@ ABOUY ME MODAL
 
 
 /* WHATSAPP FLOATING */
-
-.whatsapp-float {
+.whatsapp-wrapper {
   position: fixed;
   bottom: 20px;
   right: 1400px;
-  background-color: #25D366;
-  color: white;
-  font-size: 20px;
-  padding: 6px 10PX;
-  border-radius: 70%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  z-index: 9999;
-  text-decoration: none;
-  animation: pulse 2s infinite;
-  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  background-color: #1da851;
+.whatsapp-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+.wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 255, 0, 0.3);
+  animation: ripple 2s infinite ease-out;
+  z-index: 1;
 }
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1.8;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1.5;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 1;
+  }
+}
+
 
 <!-- /* ================SIDEBAR CART AND CHECKOUT============= */ -->
+
+
+
+
+
 
 
 
@@ -2290,7 +2334,7 @@ ABOUY ME MODAL
 
   /* Hero Section */
   .hero-content {
-    padding-top: 180px;
+    padding: 100px 0px;
   }
 
   .hero-content h1,
@@ -2573,16 +2617,18 @@ ABOUY ME MODAL
   }
   /* Hero Section */
   .hero-content {
-    padding-top: 160px;
+    padding: 100px 0px;
     text-align: center;
   }
 
   .hero-content h1 {
-    font-size: 32px;
+    font-size: 45px;
+    width: 90%;
   }
 
   .hero-content p {
-    font-size: 18px;
+    font-size: 30px;
+    width: 90%;
   }
 
   .cta-btn {
@@ -2771,10 +2817,23 @@ margin-left: 10px;
 
 .nav a {
 font-weight: 400;
-  font: 12px;
+font-size: 12px;
 }
 
+ .hero-content {
+    padding: 150px 0px;
+    text-align: center;
+  }
 
+  .hero-content h1 {
+    font-size: 45px;
+    width: 50%;
+  }
+
+  .hero-content p {
+    font-size: 30px;
+    width: 50%;
+  }
   .footer-container {
     display: flex;
     flex-wrap: wrap;
@@ -2893,12 +2952,14 @@ font-weight: 400;
   z-index: 1000;
 }
 
-
 .search-bar input {
-
-  width: 350px;
- 
+  width: 220px;
 }
+
+}
+
+
+@media (min-width: 1281px) and (max-width: 1550px) {
 
 
 }
