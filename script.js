@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ticker.addEventListener('mouseenter', () => ticker.style.animationPlayState = 'paused');
     ticker.addEventListener('mouseleave', () => ticker.style.animationPlayState = 'running');
   }
-// ========== LANDING PAGE CAROUSEL ==========
+ // ========== LANDING PAGE CAROUSEL ==========
   let currentSlide = 0;
   const slides = document.querySelectorAll('.carousel-slide');
   if (slides.length > 0) {
@@ -127,17 +127,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========== USER REGISTRATION ==========
+  
   const signupForm = document.getElementById('signupForm');
+  const btn = document.getElementById('registerBtn');
+  const emailInput = document.getElementById('signupEmail');
+
+  // Remove email error highlight when typing
+  emailInput.addEventListener('input', () => {
+    emailInput.classList.remove('error-highlight');
+  });
+
   if (signupForm) {
     signupForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const btn = document.getElementById('registerBtn');
+
       btn.querySelector('.btn-text').style.display = 'none';
       btn.querySelector('.btn-loader').style.display = 'inline';
 
       const data = {
         name: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
-        email: document.getElementById('signupEmail').value.trim(),
+        email: emailInput.value.trim(),
         phone: document.getElementById('phone').value.trim(),
         dob: document.getElementById('dob').value,
         gender: document.getElementById('gender').value,
@@ -161,24 +170,106 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('is_admin', '0');
           closeSidebar('signupSidebar');
           showToast("Registration successful!", "success");
+          signupForm.reset(); // ✅ Clear inputs
         } else {
           showToast(response.message || "Registration failed", "error");
         }
       })
-      .catch(err => {
-        console.error('Registration error:', err);
+      .catch(async err => {
         btn.querySelector('.btn-text').style.display = 'inline';
         btn.querySelector('.btn-loader').style.display = 'none';
-        showToast("Something went wrong. Please try again.", "error");
+
+        let message = "Something went wrong. Please try again.";
+
+        try {
+          const errorText = await err.text();
+          const errorData = JSON.parse(errorText);
+
+          if (errorData.errors?.email) {
+            message = errorData.errors.email[0];
+          } else if (errorData.message) {
+            message = errorData.message;
+          }
+        } catch (parseErr) {
+          console.error("Error parsing signup error:", parseErr);
+        }
+
+        if (message.toLowerCase().includes("email")) {
+          emailInput.classList.add('error-highlight');
+        }
+
+        console.error('Signup failed:', err);
+        showToast(message, "error");
       });
     });
   }
+;
 
   // ✅ NEW: Load products on page load
   fetchAllProducts();
+
+
+  // ========== FORGOT PASSWORD ==========
+  const forgotForm = document.getElementById('forgotPasswordForm');
+
+  if (forgotForm) {
+    forgotForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const emailInput = document.getElementById('forgotEmail');
+      const email = emailInput.value.trim();
+
+      if (!email) {
+        showToast("Please enter your email address.", "info");
+        return;
+      }
+
+      // Optional: disable button to prevent spam
+      const submitBtn = forgotForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      fetch('http://127.0.0.1:8000/api/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      .then(res => res.json())
+      .then(response => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send Reset Link";
+
+        if (response.status === 'success' || response.message?.includes('sent')) {
+          showToast("✅ Reset link sent to your email.", "success");
+          emailInput.value = '';
+        } else {
+          const msg = response.message || "Unable to send reset link.";
+          showToast(msg, "error");
+        }
+      })
+      .catch(async err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send Reset Link";
+
+        let message = "Something went wrong. Please try again.";
+        try {
+          // const errorData = await err.json();
+          if (errorData.errors?.email) {
+            message = errorData.errors.email[0];
+          } else if (errorData.message) {
+            message = errorData.message;
+          }
+        } catch (parseErr) {
+          console.error("Error parsing forgot password error:", parseErr);
+        }
+
+        console.error("Forgot password error:", err);
+        showToast(message, "error");
+      });
+    });
+  }
 });
 // FIRST-BATCH
-
 
 
 // ========== ACCOUNT DROPDOWN ==========
@@ -314,7 +405,6 @@ function loadAdminSection(section) {
 }
 
 // SECOND - BATCH
-
 
 
 // ========== RENDER EMPTY ROW ==========
@@ -861,9 +951,6 @@ function resetInactivityTimer() {
 // FOURTH - BATCH
 
 
-
-
-
 // ========== DOM READY ==========
 document.addEventListener("DOMContentLoaded", () => {
   // ====== DOM ELEMENTS ======
@@ -1113,10 +1200,6 @@ function prevPage() {
   }
 }
 
-
-
-
-
 // ========== NEW: FETCH ALL PRODUCTS ==========
 function fetchAllProducts() {
   const display = document.getElementById('productDisplay');
@@ -1156,10 +1239,6 @@ function fetchAllProducts() {
       pagination.classList.add('hidden');
     });
 }
-
-
-
-
 
 
 // ========== NEW: UPDATE STOCK DISPLAY ==========
@@ -1239,6 +1318,123 @@ function getRatingStars(productId) {
   const stars = ratings[productId] || 3;
   return '★'.repeat(stars) + '☆'.repeat(5 - stars);
 }
+
+
+
+
+
+
+ 
+      const testimonials = [
+        {
+          name: "Amina Yusuf",
+          date: "August 20, 2025",
+          rating: 5,
+          feedback: "I love the quality of the kiddiewear I bought. Fast delivery and great customer service!"
+        },
+        {
+          name: "Chinedu Okeke",
+          date: "August 18, 2025",
+          rating: 4,
+          feedback: "The sneakers were exactly as described. I’ll definitely be ordering again."
+        },
+        {
+          name: "Fatima Bello",
+          date: "August 15, 2025",
+          rating: 5,
+          feedback: "Affordable prices and stylish ladieswear. My friends keep asking where I shop!"
+        },
+        {
+          name: "Tunde Adebayo",
+          date: "August 10, 2025",
+          rating: 4,
+          feedback: "Boxers were comfortable and well-packaged. Great value for money."
+        },
+        {
+          name: "Ngozi Nwosu",
+          date: "August 5, 2025",
+          rating: 5,
+          feedback: "Unisex tees are top-notch. I’m impressed with the fabric and fit."
+        },
+          {
+          name: "Ngozi Nwosu",
+          date: "August 5, 2025",
+          rating: 5,
+          feedback: "Unisex tees are top-notch. I’m impressed with the fabric and fit."
+        },
+          {
+          name: "David Emeka",
+          date: "August 3, 2025",
+          rating: 4,
+          feedback: "The accessories I purchased added a nice touch to my outfits. Will shop again!"
+        },
+          {
+          name: "Zainab Ibrahim",
+          date: "August 1, 2025",
+          rating: 5,
+          feedback: "Great experience from start to finish. The wholesale options are perfect for my boutique."
+        },
+          {
+          name: "Ngozi Nwosu",
+          date: "August 5, 2025",
+          rating: 5,
+          feedback: "Unisex tees are top-notch. I’m impressed with the fabric and fit."
+        },
+          {
+          name: "David Emeka",
+          date: "August 3, 2025",
+          rating: 4,
+          feedback: "The accessories I purchased added a nice touch to my outfits. Will shop again!"
+        },
+          {
+          name: "Zainab Ibrahim",
+          date: "August 1, 2025",
+          rating: 5,
+          feedback: "Great experience from start to finish. The wholesale options are perfect for my boutique."
+        }
+
+      ];
+
+      function renderTestimonials() {
+        const carousel = document.getElementById('testimonialCarousel');
+        carousel.innerHTML = ''; // Clear previous content
+
+        testimonials.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'testimonial-card';
+          card.innerHTML = `
+        <div class="customer-name">${t.name}</div>
+        <div class="review-date">${t.date}</div>
+        <div class="stars">${'⭐'.repeat(t.rating)}${'☆'.repeat(5 - t.rating)}</div>
+        <div class="feedback">${t.feedback}</div>
+      `;
+          carousel.appendChild(card);
+        });
+      }
+
+      function animateOnScroll() {
+  const cards = document.querySelectorAll('.testimonial-card');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.3
+  });
+
+  cards.forEach(card => observer.observe(card));
+}
+
+
+      document.addEventListener('DOMContentLoaded', () => {
+        renderTestimonials();
+        animateOnScroll();
+      
+      });
+   
 
 // ========== CART ==========
 function addToCart(btn) {
@@ -1420,8 +1616,6 @@ function openAboutModal() {
 function closeAboutModal() {
   document.getElementById('aboutMeModal').style.display = 'none';
 }
-
-
 
 const menuToggle = document.getElementById('menu-toggle');
 const navLinks = document.getElementById('nav-links');

@@ -383,83 +383,17 @@
     </div>
 
     <!-- =========TESTIMONIAL DISPLAY============= -->
-    <section class="testimonial-section">
-      <h2 class="section-title">What Our Customers Are Saying</h2>
-      <div class="carousel-wrapper">
-        <div class="testimonial-carousel" id="testimonialCarousel"></div>
-      </div>
-    </section>
+   <section class="testimonial-section">
+  <h2 class="section-title">What Our Customers Are Saying</h2>
+  <div class="carousel-wrapper">
+    <div class="testimonial-carousel" id="testimonialCarousel"></div>
+  </div>
+  <div class="swipe-hint">← Swipe to see more →</div>
+</section>
 
-    <!-- ✅ Include this at the bottom of your HTML file -->
-    <script>
-      const testimonials = [
-        {
-          name: "Amina Yusuf",
-          date: "August 20, 2025",
-          rating: 5,
-          feedback: "I love the quality of the kiddiewear I bought. Fast delivery and great customer service!"
-        },
-        {
-          name: "Chinedu Okeke",
-          date: "August 18, 2025",
-          rating: 4,
-          feedback: "The sneakers were exactly as described. I’ll definitely be ordering again."
-        },
-        {
-          name: "Fatima Bello",
-          date: "August 15, 2025",
-          rating: 5,
-          feedback: "Affordable prices and stylish ladieswear. My friends keep asking where I shop!"
-        },
-        {
-          name: "Tunde Adebayo",
-          date: "August 10, 2025",
-          rating: 4,
-          feedback: "Boxers were comfortable and well-packaged. Great value for money."
-        },
-        {
-          name: "Ngozi Nwosu",
-          date: "August 5, 2025",
-          rating: 5,
-          feedback: "Unisex tees are top-notch. I’m impressed with the fabric and fit."
-        }
-      ];
 
-      function renderTestimonials() {
-        const carousel = document.getElementById('testimonialCarousel');
-        carousel.innerHTML = ''; // Clear previous content
 
-        testimonials.forEach(t => {
-          const card = document.createElement('div');
-          card.className = 'testimonial-card';
-          card.innerHTML = `
-        <div class="customer-name">${t.name}</div>
-        <div class="review-date">${t.date}</div>
-        <div class="stars">${'⭐'.repeat(t.rating)}${'☆'.repeat(5 - t.rating)}</div>
-        <div class="feedback">${t.feedback}</div>
-      `;
-          carousel.appendChild(card);
-        });
-      }
 
-      function slideTestimonials() {
-        const carousel = document.getElementById('testimonialCarousel');
-        const cardsPerView = 4;
-        const totalCards = testimonials.length;
-        let currentIndex = 0;
-
-        setInterval(() => {
-          currentIndex = (currentIndex + cardsPerView) % totalCards;
-          const offset = currentIndex * (100 / cardsPerView);
-          carousel.style.transform = `translateX(-${offset}%)`;
-        }, 5000); // Slide every 5 seconds
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        renderTestimonials();
-        slideTestimonials();
-      });
-    </script>
     <!-- 🔍 ABOUT ME MODAL -->
     <div id="aboutMeModal" class="modal">
       <div class="modal-content about-modal">
